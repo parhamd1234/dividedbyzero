@@ -1,8 +1,13 @@
+import KineticHeading from "./_components/KineticHeading";
+import MouseGlow from "./_components/MouseGlow";
 import SignupForm from "./_components/SignupForm";
 
 export default function Home() {
   return (
     <main className="relative flex flex-1 min-h-screen flex-col items-center justify-center px-6 py-16 text-center overflow-hidden bg-black text-white">
+      {/* Cursor-following soft purple glow */}
+      <MouseGlow />
+
       {/* Atmospheric background: subtle radial glow + dot field */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -36,16 +41,31 @@ export default function Home() {
 
       {/* Foreground */}
       <div className="relative z-10 max-w-2xl w-full flex flex-col items-center">
-        {/* Logo mark — kept exactly as-is */}
+        {/* Logo mark — draw-on then breathe */}
         <svg
           viewBox="0 0 100 100"
           xmlns="http://www.w3.org/2000/svg"
           role="img"
           aria-label="Divided by Zero"
-          className="w-28 h-28 sm:w-36 sm:h-36 text-white dbz-mark dbz-fade"
+          className="w-28 h-28 sm:w-36 sm:h-36 text-white dbz-mark"
         >
-          <circle cx="50" cy="16" r="7" fill="currentColor" />
-          <rect x="14" y="46" width="72" height="8" rx="4" fill="currentColor" />
+          <circle
+            cx="50"
+            cy="16"
+            r="7"
+            fill="currentColor"
+            className="dbz-fill"
+          />
+          <rect
+            x="14"
+            y="46"
+            width="72"
+            height="8"
+            rx="4"
+            fill="currentColor"
+            className="dbz-fill"
+            style={{ animationDelay: "300ms" }}
+          />
           <circle
             cx="50"
             cy="82"
@@ -53,6 +73,8 @@ export default function Home() {
             fill="none"
             stroke="currentColor"
             strokeWidth="6"
+            className="dbz-draw"
+            pathLength={200}
           />
         </svg>
 
@@ -63,18 +85,19 @@ export default function Home() {
           Divided by Zero
         </p>
 
-        <h1
-          className="font-serif mt-6 text-[clamp(1.75rem,3.8vw,3.25rem)] font-medium tracking-[-0.015em] leading-[1.15] dbz-fade"
-          style={{ animationDelay: "240ms" }}
+        <KineticHeading
+          as="h1"
+          className="font-serif mt-6 text-[clamp(1.75rem,3.8vw,3.25rem)] font-medium tracking-[-0.015em] leading-[1.15]"
+          stagger={90}
+          duration={800}
+          delay={1500}
         >
-          Unlocking the
-          <br />
-          field mechanics
-        </h1>
+          {"Unlocking the field mechanics"}
+        </KineticHeading>
 
         <p
           className="mt-8 text-base sm:text-lg text-white/55 max-w-md leading-relaxed dbz-fade"
-          style={{ animationDelay: "360ms" }}
+          style={{ animationDelay: "2600ms" }}
         >
           Something is being built at the edges of what&apos;s possible. Be
           first to know when it arrives.
@@ -82,20 +105,20 @@ export default function Home() {
 
         <div
           className="mt-10 w-full dbz-fade"
-          style={{ animationDelay: "480ms" }}
+          style={{ animationDelay: "2800ms" }}
         >
           <SignupForm />
         </div>
 
         <p
           className="mt-10 text-xs font-medium tracking-[0.3em] uppercase text-white/35 dbz-fade"
-          style={{ animationDelay: "600ms" }}
+          style={{ animationDelay: "3000ms" }}
         >
           Coming soon
         </p>
       </div>
 
-      <footer className="absolute bottom-6 inset-x-0 text-center text-xs text-white/30">
+      <footer className="absolute bottom-6 inset-x-0 text-center text-xs text-white/30 z-10">
         © {new Date().getFullYear()} Divided by Zero
       </footer>
     </main>
