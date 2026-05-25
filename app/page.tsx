@@ -64,7 +64,7 @@ export default function Home() {
         </p>
 
         <h1
-          className="mt-6 text-[clamp(2.25rem,6vw,5rem)] font-semibold tracking-[-0.03em] leading-[1.05] dbz-fade"
+          className="font-serif mt-6 text-[clamp(1.75rem,3.8vw,3.25rem)] font-medium tracking-[-0.015em] leading-[1.15] dbz-fade"
           style={{ animationDelay: "240ms" }}
         >
           Unlocking the
