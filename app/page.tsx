@@ -69,7 +69,7 @@ export default function Home() {
         >
           Unlocking the
           <br />
-          field mechanics.
+          field mechanics
         </h1>
 
         <p
