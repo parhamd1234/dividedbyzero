@@ -5,6 +5,33 @@ import SignupForm from "./_components/SignupForm";
 export default function Home() {
   return (
     <main className="relative flex flex-1 min-h-screen flex-col items-center justify-center px-6 py-16 text-center overflow-hidden bg-black text-white">
+      {/* Cinematic background video — field vortex, scaled and heavily dimmed */}
+      <video
+        src="/hero.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden
+        className="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none scale-150"
+        style={{ filter: "blur(2px) saturate(1.2)" }}
+      />
+      {/* Darken video heavily so foreground content reads */}
+      <div
+        className="absolute inset-0 pointer-events-none bg-black/70"
+        aria-hidden
+      />
+      {/* Vignette to push the vortex toward the edges */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        aria-hidden
+        style={{
+          background:
+            "radial-gradient(ellipse 50% 50% at 50% 50%, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0) 100%)",
+        }}
+      />
+
       {/* Cursor-following soft purple glow */}
       <MouseGlow />
 
