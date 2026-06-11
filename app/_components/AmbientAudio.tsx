@@ -77,23 +77,6 @@ export default function AmbientAudio() {
       }
     }
 
-    // --- Air: faint filtered noise
-    const noiseBuf = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
-    const data = noiseBuf.getChannelData(0);
-    for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
-    const noise = ctx.createBufferSource();
-    noise.buffer = noiseBuf;
-    noise.loop = true;
-    const noiseFilter = ctx.createBiquadFilter();
-    noiseFilter.type = "bandpass";
-    noiseFilter.frequency.value = 900;
-    noiseFilter.Q.value = 0.4;
-    const noiseGain = ctx.createGain();
-    noiseGain.gain.value = 0.012;
-    noise.connect(noiseFilter).connect(noiseGain).connect(master);
-    noise.start();
-    stops.push(() => noise.stop());
-
     // --- Chimes: sparse pentatonic pings through a feedback delay
     const delay = ctx.createDelay(2);
     delay.delayTime.value = 0.55;
@@ -180,20 +163,27 @@ export default function AmbientAudio() {
         aria-label={playing ? "Mute ambient sound" : "Play ambient sound"}
         className="group w-11 h-11 rounded-full border border-white/20 bg-black/40 backdrop-blur-sm flex items-center justify-center hover:border-white/50 transition-colors"
       >
-        <span className="flex items-end gap-[3px] h-4" aria-hidden>
-          {[0, 1, 2, 3].map((i) => (
-            <span
-              key={i}
-              className={`w-[2.5px] rounded-full bg-white/80 ${
-                playing ? "dbz-eq" : ""
-              }`}
-              style={{
-                height: playing ? undefined : "3px",
-                animationDelay: `${i * 180}ms`,
-              }}
-            />
-          ))}
-        </span>
+        {/* Speaker icon — waves when playing, slash when muted */}
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="w-5 h-5 text-white/80 group-hover:text-white transition-colors"
+          aria-hidden
+        >
+          <path d="M11 5 6.5 9H3v6h3.5L11 19V5z" fill="currentColor" stroke="none" />
+          {playing ? (
+            <>
+              <path d="M14.5 9.5a4 4 0 0 1 0 5" />
+              <path d="M17 7a8 8 0 0 1 0 10" />
+            </>
+          ) : (
+            <path d="M15 9.5l5 5M20 9.5l-5 5" />
+          )}
+        </svg>
       </button>
     </div>
   );

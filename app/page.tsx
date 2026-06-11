@@ -89,26 +89,6 @@ export default function Home() {
 
       {/* ============ HERO ============ */}
       <section className="relative flex min-h-screen flex-col items-center justify-center px-6 py-16 text-center overflow-hidden">
-        <video
-          src="/hero.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          aria-hidden
-          className="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none scale-150"
-          style={{ filter: "blur(2px) saturate(1.2)" }}
-        />
-        <div className="absolute inset-0 pointer-events-none bg-black/70" aria-hidden />
-        <div
-          className="absolute inset-0 pointer-events-none"
-          aria-hidden
-          style={{
-            background:
-              "radial-gradient(ellipse 50% 50% at 50% 50%, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0) 100%)",
-          }}
-        />
         <div
           className="absolute inset-0 pointer-events-none dbz-glow"
           aria-hidden
@@ -116,12 +96,6 @@ export default function Home() {
             background:
               "radial-gradient(ellipse 35% 30% at 50% 45%, rgba(168,140,255,0.18) 0%, rgba(168,140,255,0) 70%)",
           }}
-        />
-        {/* Fade hero into the next section */}
-        <div
-          className="absolute bottom-0 inset-x-0 h-40 pointer-events-none"
-          aria-hidden
-          style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0), #000)" }}
         />
 
         <div className="relative z-10 max-w-3xl w-full flex flex-col items-center">
