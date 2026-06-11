@@ -60,11 +60,11 @@ export default function FieldCanvas() {
           angle: Math.random() * Math.PI * 2,
           radius: baseRadius,
           baseRadius,
-          speed: (0.00012 + Math.random() * 0.00035) * (Math.random() < 0.5 ? 1 : -1),
+          speed: (0.00004 + Math.random() * 0.00012) * (Math.random() < 0.5 ? 1 : -1),
           size: 0.6 + Math.random() * 1.6,
           hue: Math.random(),
           wobble: Math.random() * Math.PI * 2,
-          wobbleSpeed: 0.002 + Math.random() * 0.006,
+          wobbleSpeed: 0.0008 + Math.random() * 0.002,
         };
       });
     }
