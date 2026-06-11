@@ -20,7 +20,16 @@ const fraunces = Fraunces({
 
 export const metadata: Metadata = {
   title: "Divided by Zero — Unlocking the Field Mechanics",
-  description: "Coming soon. Unlocking the field mechanics.",
+  description:
+    "Something is being built at the edges of what's possible. Unlocking the field mechanics — coming soon.",
+  metadataBase: new URL("https://dividedbyzero.ca"),
+  openGraph: {
+    title: "Divided by Zero",
+    description: "Unlocking the field mechanics. Coming soon.",
+    url: "https://dividedbyzero.ca",
+    siteName: "Divided by Zero",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

@@ -5,6 +5,15 @@ html, body {
   color: #ffffff;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: rgba(168, 140, 255, 0.35);
+  color: #ffffff;
+}
+
 body {
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -56,8 +65,39 @@ body {
   animation-delay: 700ms;
 }
 
+/* Equalizer bars on the sound toggle */
+@keyframes dbz-eq {
+  0%, 100% { height: 4px; }
+  50%      { height: 15px; }
+}
+.dbz-eq {
+  animation: dbz-eq 900ms ease-in-out infinite;
+}
+
+/* "Sound on" hint pulse */
+@keyframes dbz-hint {
+  0%, 100% { opacity: 0.35; }
+  50%      { opacity: 0.85; }
+}
+.dbz-hint {
+  animation: dbz-hint 2.4s ease-in-out infinite;
+}
+
+/* Scroll cue line */
+@keyframes dbz-scroll {
+  0%   { transform: scaleY(0); transform-origin: top; }
+  45%  { transform: scaleY(1); transform-origin: top; }
+  55%  { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+.dbz-scroll-line {
+  animation: dbz-scroll 2.2s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .dbz-mark, .dbz-glow, .dbz-fade, .dbz-draw, .dbz-fill { animation: none; }
+  .dbz-mark, .dbz-glow, .dbz-fade, .dbz-draw, .dbz-fill,
+  .dbz-eq, .dbz-hint, .dbz-scroll-line { animation: none; }
   .dbz-draw { stroke-dashoffset: 0; }
   .dbz-fill { fill-opacity: 1; }
+  html { scroll-behavior: auto; }
 }
