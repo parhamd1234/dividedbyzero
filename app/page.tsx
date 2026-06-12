@@ -1,3 +1,7 @@
+// Cap CDN caching at 5 min — Hostinger's hCDN never purges on deploy,
+// so the default year-long s-maxage left stale edges serving old builds.
+export const revalidate = 300;
+
 import AmbientAudio from "./_components/AmbientAudio";
 import FieldCanvas from "./_components/FieldCanvas";
 import KineticHeading from "./_components/KineticHeading";
