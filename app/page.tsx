@@ -2,6 +2,7 @@
 // so the default year-long s-maxage left stale edges serving old builds.
 export const revalidate = 300;
 
+import Link from "next/link";
 import AmbientAudio from "./_components/AmbientAudio";
 import FieldCanvas from "./_components/FieldCanvas";
 import KineticHeading from "./_components/KineticHeading";
@@ -240,6 +241,12 @@ export default function Home() {
             <Mark className="w-5 h-5 text-white/50" />
             <span className="tracking-[0.2em] uppercase">Divided by Zero</span>
           </div>
+          <Link
+            href="/notes"
+            className="tracking-[0.2em] uppercase hover:text-white/60 transition-colors"
+          >
+            Field Notes
+          </Link>
           <p>© {new Date().getFullYear()} Divided by Zero — Toronto, Canada</p>
         </div>
       </footer>
