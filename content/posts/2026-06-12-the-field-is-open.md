@@ -1,6 +1,7 @@
 ---
 title: The field is open
 date: 2026-06-12
+category: field
 summary: First transmission. What this space is for, and what comes next.
 ---
 

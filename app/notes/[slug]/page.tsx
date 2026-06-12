@@ -47,6 +47,14 @@ export default async function PostPage({
 
         <p className="mt-10 text-[11px] font-mono tracking-[0.25em] uppercase text-white/35">
           {formatDate(post.date)}
+          {post.category && (
+            <Link
+              href={`/notes/${post.category}`}
+              className="ml-3 text-[rgba(198,178,255,0.7)] hover:text-[rgb(198,178,255)] transition-colors"
+            >
+              {post.category}
+            </Link>
+          )}
         </p>
         <h1 className="font-serif mt-3 text-[clamp(1.9rem,4.2vw,3rem)] font-medium tracking-[-0.015em] leading-[1.15]">
           {post.title}

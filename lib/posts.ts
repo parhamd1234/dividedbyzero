@@ -2,11 +2,16 @@ import fs from "fs";
 import path from "path";
 import { marked } from "marked";
 
+export type Category = "signal" | "field" | "emergence";
+
+export const CATEGORIES: Category[] = ["signal", "field", "emergence"];
+
 export type Post = {
   slug: string;
   title: string;
   date: string;
   summary: string;
+  category: Category | null;
   html: string;
 };
 
@@ -38,11 +43,15 @@ export function getAllPosts(): Post[] {
       const slug = file
         .replace(/\.md$/, "")
         .replace(/^\d{4}-\d{2}-\d{2}-/, "");
+      const cat = meta.category?.toLowerCase();
       return {
         slug,
         title: meta.title ?? slug,
         date: meta.date ?? file.slice(0, 10),
         summary: meta.summary ?? "",
+        category: CATEGORIES.includes(cat as Category)
+          ? (cat as Category)
+          : null,
         html: marked.parse(body, { async: false }),
       };
     })
@@ -51,6 +60,10 @@ export function getAllPosts(): Post[] {
 
 export function getPost(slug: string): Post | undefined {
   return getAllPosts().find((p) => p.slug === slug);
+}
+
+export function getPostsByCategory(category: Category): Post[] {
+  return getAllPosts().filter((p) => p.category === category);
 }
 
 export function formatDate(date: string): string {

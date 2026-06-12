@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getAllPosts, formatDate } from "../../lib/posts";
+import { categoryInfo } from "../_components/categories";
 import FieldCanvas from "../_components/FieldCanvas";
 import MouseGlow from "../_components/MouseGlow";
 import Reveal from "../_components/Reveal";
@@ -43,7 +44,21 @@ export default function NotesPage() {
           </p>
         </Reveal>
 
-        <div className="mt-16 flex flex-col gap-2">
+        <Reveal delay={320}>
+          <div className="mt-8 flex flex-wrap gap-3">
+            {categoryInfo.map((c) => (
+              <Link
+                key={c.key}
+                href={`/notes/${c.key}`}
+                className="rounded-full border border-white/15 px-4 py-1.5 text-[11px] tracking-[0.25em] uppercase text-white/50 hover:border-[rgba(168,140,255,0.5)] hover:text-[rgb(198,178,255)] transition-colors"
+              >
+                {c.title}
+              </Link>
+            ))}
+          </div>
+        </Reveal>
+
+        <div className="mt-14 flex flex-col gap-2">
           {posts.length === 0 && (
             <p className="text-white/40">Nothing logged yet.</p>
           )}
@@ -55,6 +70,11 @@ export default function NotesPage() {
               >
                 <p className="text-[11px] font-mono tracking-[0.25em] uppercase text-white/35">
                   {formatDate(post.date)}
+                  {post.category && (
+                    <span className="ml-3 text-[rgba(198,178,255,0.7)]">
+                      {post.category}
+                    </span>
+                  )}
                 </p>
                 <h2 className="font-serif mt-2 text-2xl text-white/90 group-hover:text-white transition-colors">
                   {post.title}
