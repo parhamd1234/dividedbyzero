@@ -3,7 +3,6 @@
 export const revalidate = 300;
 
 import Link from "next/link";
-import AmbientAudio from "./_components/AmbientAudio";
 import { categoryInfo } from "./_components/categories";
 import FieldCanvas from "./_components/FieldCanvas";
 import KineticHeading from "./_components/KineticHeading";
@@ -51,7 +50,6 @@ export default function Home() {
       {/* Persistent atmosphere across the whole page */}
       <FieldCanvas />
       <MouseGlow />
-      <AmbientAudio />
 
       {/* ============ HERO ============ */}
       <section className="relative flex min-h-screen flex-col items-center justify-center px-6 py-16 text-center overflow-hidden">

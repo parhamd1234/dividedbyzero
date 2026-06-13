@@ -16,10 +16,54 @@ export default function AmbientAudio() {
     master: GainNode;
     stop: () => void;
   } | null>(null);
+  // Set once the user deliberately mutes, so we don't auto-restart on them.
+  const optedOut = useRef(false);
+
+  function start() {
+    if (engine.current) return;
+    const e = buildEngine();
+    engine.current = e;
+    e.ctx.resume?.();
+    const now = e.ctx.currentTime;
+    e.master.gain.setValueAtTime(0, now);
+    e.master.gain.linearRampToValueAtTime(0.55, now + 2.5);
+    setPlaying(true);
+  }
+
+  function stopEngine() {
+    engine.current?.stop();
+    engine.current = null;
+    setPlaying(false);
+  }
 
   useEffect(() => {
     const t = setTimeout(() => setHint(false), 9000);
     return () => clearTimeout(t);
+  }, []);
+
+  // Default to "on": browsers forbid sound before the user interacts with the
+  // page, so the soundscape fades in on the first click / tap / key / scroll
+  // anywhere — the closest thing to autoplay the platform permits.
+  useEffect(() => {
+    const onFirst = (e: Event) => {
+      if (
+        e.target instanceof Element &&
+        e.target.closest("[data-audio-toggle]")
+      ) {
+        return; // the toggle button manages itself
+      }
+      if (optedOut.current || engine.current) return;
+      setHint(false);
+      start();
+      detach();
+    };
+    const events = ["pointerdown", "keydown", "click", "touchend"];
+    const detach = () =>
+      events.forEach((ev) => window.removeEventListener(ev, onFirst));
+    events.forEach((ev) =>
+      window.addEventListener(ev, onFirst, { passive: true })
+    );
+    return detach;
   }, []);
 
   useEffect(() => {
@@ -136,17 +180,12 @@ export default function AmbientAudio() {
   function toggle() {
     setHint(false);
     if (playing) {
-      engine.current?.stop();
-      engine.current = null;
-      setPlaying(false);
-      return;
+      optedOut.current = true;
+      stopEngine();
+    } else {
+      optedOut.current = false;
+      start();
     }
-    const e = buildEngine();
-    engine.current = e;
-    const now = e.ctx.currentTime;
-    e.master.gain.setValueAtTime(0, now);
-    e.master.gain.linearRampToValueAtTime(0.55, now + 2.5);
-    setPlaying(true);
   }
 
   return (
@@ -158,6 +197,7 @@ export default function AmbientAudio() {
       )}
       <button
         type="button"
+        data-audio-toggle
         onClick={toggle}
         aria-pressed={playing}
         aria-label={playing ? "Mute ambient sound" : "Play ambient sound"}
