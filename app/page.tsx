@@ -129,7 +129,10 @@ export default function Home() {
       </section>
 
       {/* ============ PRINCIPLES ============ */}
-      <section className="relative z-10 px-6 py-20 sm:py-28">
+      <section
+        id="approach"
+        className="relative z-10 px-6 py-20 sm:py-28 scroll-mt-24"
+      >
         <div className="max-w-5xl mx-auto">
           <Reveal>
             <p className="text-xs font-medium tracking-[0.35em] uppercase text-white/40">

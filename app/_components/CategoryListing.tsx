@@ -17,7 +17,7 @@ export default function CategoryListing({ category }: { category: Category }) {
       <main className="relative z-10 max-w-2xl mx-auto px-6 py-24 sm:py-32">
         <Reveal>
           <nav className="flex items-center gap-4 text-xs font-medium tracking-[0.3em] uppercase text-white/40">
-            <Link href="/" className="hover:text-white/70 transition-colors">
+            <Link href="/#approach" className="hover:text-white/70 transition-colors">
               ← Divided by Zero
             </Link>
             <span className="text-white/20">/</span>

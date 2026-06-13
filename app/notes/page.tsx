@@ -24,7 +24,7 @@ export default function NotesPage() {
       <main className="relative z-10 max-w-2xl mx-auto px-6 py-24 sm:py-32">
         <Reveal>
           <Link
-            href="/"
+            href="/#approach"
             className="text-xs font-medium tracking-[0.3em] uppercase text-white/40 hover:text-white/70 transition-colors"
           >
             ← Divided by Zero
