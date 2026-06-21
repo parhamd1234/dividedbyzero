@@ -20,14 +20,22 @@ export default function AmbientAudio() {
   const optedOut = useRef(false);
 
   function start() {
-    if (engine.current) return;
-    const e = buildEngine();
-    engine.current = e;
-    e.ctx.resume?.();
-    const now = e.ctx.currentTime;
-    e.master.gain.setValueAtTime(0, now);
-    e.master.gain.linearRampToValueAtTime(0.55, now + 2.5);
-    setPlaying(true);
+    if (optedOut.current) return;
+    if (!engine.current) {
+      const e = buildEngine();
+      const now = e.ctx.currentTime;
+      e.master.gain.setValueAtTime(0, now);
+      e.master.gain.linearRampToValueAtTime(0.55, now + 2.5);
+      engine.current = e;
+    }
+    const { ctx } = engine.current;
+    // resume() only produces sound once the browser trusts the page (a prior
+    // interaction, or high media-engagement). Reflect "playing" only if it took.
+    const mark = () => {
+      if (ctx.state === "running") setPlaying(true);
+    };
+    ctx.resume?.().then(mark).catch(() => {});
+    mark();
   }
 
   function stopEngine() {
@@ -41,6 +49,15 @@ export default function AmbientAudio() {
     return () => clearTimeout(t);
   }, []);
 
+  // Try to start the moment the page loads. Browsers block audio before any
+  // interaction, so this only makes sound for visitors the browser already
+  // trusts (repeat visitors / high media-engagement); everyone else falls
+  // through to the first-interaction handler below.
+  useEffect(() => {
+    start();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Default to "on": browsers forbid sound before the user interacts with the
   // page, so the soundscape fades in on the first click / tap / key / scroll
   // anywhere — the closest thing to autoplay the platform permits.
@@ -52,10 +69,12 @@ export default function AmbientAudio() {
       ) {
         return; // the toggle button manages itself
       }
-      if (optedOut.current || engine.current) return;
+      if (optedOut.current || engine.current?.ctx.state === "running") {
+        detach();
+        return;
+      }
       setHint(false);
       start();
-      detach();
     };
     const events = ["pointerdown", "keydown", "click", "touchend"];
     const detach = () =>
