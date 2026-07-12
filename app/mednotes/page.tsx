@@ -48,10 +48,17 @@ export default function MedNotes() {
       setElapsed(Math.round((Date.now() - t0) / 1000));
       const s = await api({ op: "status", pin, job_id: sub.job_id });
       if (s.state === "done") {
-        clearInterval(timer.current!);
         setResult({ note: s.note ?? "", evidence: s.evidence ?? "" });
         setDraft(false);
         setState("done");
+        // note is final; keep polling (max ~8 min) for the background evidence report
+        if (s.evidence || Date.now() - t0 > 8 * 60 * 1000) {
+          clearInterval(timer.current!);
+          if (!s.evidence)
+            setResult((r) =>
+              r ? { ...r, evidence: "Evidence pass didn't return this run." } : r
+            );
+        }
       } else if (s.state === "processing" && s.note) {
         setResult({ note: s.note, evidence: "" });
         setDraft(true);
@@ -129,11 +136,22 @@ export default function MedNotes() {
             {result.note}
           </pre>
 
+          {state === "done" && !result.evidence && (
+            <p className="mt-6 rounded-md border border-emerald-400/20 bg-emerald-400/5 p-3 text-xs text-emerald-200/70">
+              Evidence pass running in background — will appear here in ~2 min.
+              Safe to copy the note and move on.
+            </p>
+          )}
           {result.evidence && (
             <>
               <h2 className="mt-6 mb-2 text-lg font-medium text-emerald-300/90">
                 Evidence — not for chart
               </h2>
+              {result.evidence.includes("SUGGESTED CHANGE:") && (
+                <p className="mb-2 rounded-md border border-amber-300/40 bg-amber-300/10 p-2 text-xs font-medium text-amber-200">
+                  ⚠ Evidence suggests amendments to the charted note — see below.
+                </p>
+              )}
               <pre className="whitespace-pre-wrap rounded-md border border-emerald-400/20 bg-emerald-400/5 p-4 text-sm leading-relaxed text-white/80">
                 {result.evidence}
               </pre>
