@@ -10,6 +10,7 @@ export default function MedNotes() {
   const [state, setState] = useState<"idle" | "working" | "done" | "error">("idle");
   const [elapsed, setElapsed] = useState(0);
   const [result, setResult] = useState<Result | null>(null);
+  const [draft, setDraft] = useState(false);
   const [err, setErr] = useState("");
   const [copied, setCopied] = useState(false);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -31,6 +32,7 @@ export default function MedNotes() {
   async function go() {
     setErr("");
     setResult(null);
+    setDraft(false);
     setCopied(false);
     localStorage.setItem("mednotes_pin", pin);
     setState("working");
@@ -48,7 +50,11 @@ export default function MedNotes() {
       if (s.state === "done") {
         clearInterval(timer.current!);
         setResult({ note: s.note ?? "", evidence: s.evidence ?? "" });
+        setDraft(false);
         setState("done");
+      } else if (s.state === "processing" && s.note) {
+        setResult({ note: s.note, evidence: "" });
+        setDraft(true);
       } else if (s.state === "error" || s.state === "gone") {
         clearInterval(timer.current!);
         setState("error");
@@ -104,8 +110,14 @@ export default function MedNotes() {
 
       {result && (
         <section className="mt-8">
+          {draft && (
+            <p className="mb-3 rounded-md border border-amber-300/30 bg-amber-300/10 p-2 text-xs text-amber-200">
+              Draft — polish + evidence pass running, final version will replace
+              this automatically.
+            </p>
+          )}
           <div className="mb-2 flex items-center justify-between">
-            <h2 className="text-lg font-medium">Note</h2>
+            <h2 className="text-lg font-medium">{draft ? "Note (draft)" : "Note"}</h2>
             <button
               onClick={copyNote}
               className="rounded-md border border-white/30 px-3 py-1 text-xs hover:bg-white/10"

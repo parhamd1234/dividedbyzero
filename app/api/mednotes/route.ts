@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
   }
 
   // --- Mac worker ops (secret) ---
-  if (op === "claim" || op === "complete") {
+  if (op === "claim" || op === "complete" || op === "progress") {
     if (sha256(body.secret ?? "") !== SECRET_HASH)
       return NextResponse.json({ error: "bad secret" }, { status: 403 });
 
@@ -80,6 +80,12 @@ export async function POST(req: NextRequest) {
         }
       }
       return NextResponse.json({});
+    }
+
+    if (op === "progress") {
+      const j = jobs.get(body.job_id ?? "");
+      if (j && j.state === "processing") j.note = body.note ?? "";
+      return NextResponse.json({ ok: true });
     }
 
     const j = jobs.get(body.job_id ?? "");
