@@ -70,6 +70,17 @@ export default function MedNotes() {
     }, 3000);
   }
 
+  function reset() {
+    if (timer.current) clearInterval(timer.current);
+    setDictation("");
+    setResult(null);
+    setDraft(false);
+    setErr("");
+    setCopied(false);
+    setElapsed(0);
+    setState("idle");
+  }
+
   async function copyNote() {
     if (!result) return;
     await navigator.clipboard.writeText(result.note);
@@ -101,13 +112,22 @@ export default function MedNotes() {
         className="mb-3 w-full rounded-md border border-white/20 bg-white/5 p-3 text-sm leading-relaxed outline-none focus:border-white/50"
       />
 
-      <button
-        onClick={go}
-        disabled={state === "working" || !pin || !dictation.trim()}
-        className="rounded-md bg-white px-5 py-2 text-sm font-medium text-black disabled:opacity-40"
-      >
-        {state === "working" ? `Working… ${elapsed}s` : "Generate note"}
-      </button>
+      <div className="flex items-center gap-3">
+        <button
+          onClick={go}
+          disabled={state === "working" || !pin || !dictation.trim()}
+          className="rounded-md bg-white px-5 py-2 text-sm font-medium text-black disabled:opacity-40"
+        >
+          {state === "working" ? `Working… ${elapsed}s` : "Generate note"}
+        </button>
+        <button
+          onClick={reset}
+          disabled={!dictation && !result && state === "idle"}
+          className="rounded-md border border-white/30 px-4 py-2 text-sm text-white/80 hover:bg-white/10 disabled:opacity-30"
+        >
+          New note
+        </button>
+      </div>
 
       {state === "error" && (
         <p className="mt-4 rounded-md border border-red-400/40 bg-red-400/10 p-3 text-sm text-red-300">
